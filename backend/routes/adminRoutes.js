@@ -1,6 +1,7 @@
 import express from 'express';
-import { User, Role } from '../models/index.js'; // Ensure your models are indexed correctly
-import { authenticateToken, isAdmin } from '../middleware/authMiddleware.js';
+import User from './../models/user.js';
+import Role from './../models/role.js';
+import { authenticateToken, isAdmin } from '../middlewares/authMiddleware.js';
 
 const router = express.Router();
 
