@@ -21,7 +21,8 @@ const Expense = sequelize.define('Expense', {
   },
   paymentMethod: {
     type: DataTypes.STRING,
-    allowNull: false,
+    defaultValue: 'online',
+    // allowNull: false,
   },
   date: {
     type: DataTypes.DATE,

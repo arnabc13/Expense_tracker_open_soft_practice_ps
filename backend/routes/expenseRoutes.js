@@ -4,6 +4,10 @@ import Expense from '../models/expense.js';
 
 const router = express.Router();
 
+router.get('/test', async(req, res) => {
+  res.status(200).json('Api is working');
+})
+
 router.post('/add', authenticate, async (req, res) => {
   const { amount, description, category, paymentMethod } = req.body;
 
@@ -21,9 +25,9 @@ router.post('/add', authenticate, async (req, res) => {
   }
 });
 
-router.get('/list', authenticate, async (req, res) => {
+router.get('/list/:id', async (req, res) => {
   try {
-    const expenses = await Expense.findAll({ where: { userId: req.user.id } });
+    const expenses = await Expense.findAll({ where: { userId: req.params.id } });
     res.json({ expenses });
   } catch (err) {
     res.status(500).json({ message: 'Failed to fetch expenses', error: err.message });
