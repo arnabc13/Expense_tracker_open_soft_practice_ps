@@ -1,17 +1,24 @@
-import { useState } from 'react'
-import Dashboard from './components/dashboard.jsx'
-import Navbar from './components/navbar.jsx'
-import './App.css'
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { useState } from "react";
+import Navbar from "./components/Navbar";
+import Dashboard from "./pages/Dashboard";
+import AuthPage from "./pages/AuthPage";
+import { Toaster } from 'react-hot-toast';
+import "./App.css";
+import { AuthProvider } from "./context/AuthContext";
 
 function App() {
-  
-
   return (
-    <>
-      <Navbar></Navbar>
-      <Dashboard></Dashboard>
-    </>
-  )
+    <AuthProvider>
+      <Toaster />
+      <Router>
+        <Routes>
+          <Route path="/" element={<Dashboard />} />
+          <Route path="/auth" element={<AuthPage />} />
+        </Routes>
+      </Router>
+    </AuthProvider>
+  );
 }
 
-export default App
+export default App;

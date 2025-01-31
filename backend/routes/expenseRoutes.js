@@ -9,7 +9,7 @@ router.get('/test', async(req, res) => {
 })
 
 router.post('/add', authenticate, async (req, res) => {
-  const { amount, description, category, paymentMethod } = req.body;
+  const { amount, description, category, paymentMethod, userId } = req.body;
 
   try {
     const expense = await Expense.create({
@@ -17,7 +17,7 @@ router.post('/add', authenticate, async (req, res) => {
       description,
       category,
       paymentMethod,
-      userId: req.user.id,
+      userId,
     });
     res.status(201).json({ expense });
   } catch (err) {
