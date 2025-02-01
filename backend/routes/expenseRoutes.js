@@ -8,9 +8,8 @@ router.get('/test', async(req, res) => {
   res.status(200).json('Api is working');
 })
 
-router.post('/add', authenticate,async (req, res) => {
-  const { amount, description, category, paymentMethod,userId } = req.body;
-  
+router.post('/add', authenticate, async (req, res) => {
+  const { amount, description, category, paymentMethod, userId } = req.body;
 
   try {
     const expense = await Expense.create({
