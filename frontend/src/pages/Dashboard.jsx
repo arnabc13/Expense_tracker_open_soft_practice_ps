@@ -1,7 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import Navbar from '../components/Navbar';
+import { useAuth } from '../context/AuthContext';
+import { useNavigate } from "react-router-dom";
+import Loading from './Loading';
+import AuthPage from './AuthPage';
 
 const Dashboard = () => {
+  const {loading, user} = useAuth();
+
+  const navigate = useNavigate();
+
   // State for transactions
   const [transactions, setTransactions] = useState([]);
   
@@ -52,6 +60,12 @@ const Dashboard = () => {
     setTotalExpense(expense);
     setRemainingBalance(income - expense);
   }, [transactions]);
+
+  if(loading) return (<Loading />);
+
+  if(!user){
+    return (<AuthPage />);
+  }
 
   return (
     <>

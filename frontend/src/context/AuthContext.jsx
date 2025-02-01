@@ -18,10 +18,12 @@ export const AuthProvider = ({ children }) => {
 
         const fetchUser = async () => {
             try {
-                const { data } = await axios.get(`${apiUrl}/api/users/me`, {
+                const req = await axios.get(`${apiUrl}/api/users/me`, {
                     headers: { Authorization: `Bearer ${token}` },
                 });
-                setUser(data.user);
+                console.log('req: ', req);
+                console.log('user: ', req.data);
+                setUser(req.data);
             } catch {
                 localStorage.removeItem("token");
                 setUser(null);
@@ -31,7 +33,7 @@ export const AuthProvider = ({ children }) => {
         };
 
         fetchUser();
-    }, [apiUrl]);
+    }, []);
 
     const signup = async (name, email, password) => {
         try {

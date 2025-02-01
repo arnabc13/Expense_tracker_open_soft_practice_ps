@@ -1,21 +1,19 @@
 import { useState } from "react";
-import axios from "axios";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
-import toast from 'react-hot-toast';
+import toast from "react-hot-toast";
 
 const AuthPage = () => {
-  const {login, signup, user, apiUrl} = useAuth();
+  const { login, signup } = useAuth();
   const [isLogin, setIsLogin] = useState(true);
   const [formData, setFormData] = useState({ email: "", password: "", name: "" });
-  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
 
   const toggleMode = () => {
     setIsLogin(!isLogin);
     setFormData({ email: "", password: "", name: "" });
-    setError("");
   };
 
   const handleChange = (e) => {
@@ -24,44 +22,31 @@ const AuthPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError("");
+    setLoading(true);
 
     if (!isLogin && !formData.name) {
       toast.error("Name is required for signup");
-      // setError("Name is required for signup");
+      setLoading(false);
       return;
     }
 
     try {
-      if(isLogin){
+      if (isLogin) {
+        setLoading(true);
         const result = await login(formData.email, formData.password);
-  
-        if(result){
-          navigate('/');
+        if (result) {
+          setLoading(false);
+          navigate("/");
         }
-      }else{
+      } else {
         const result = await signup(formData.name, formData.email, formData.password);
-        if(result){
-          setIsLogin(true);
-        }else{
-          toast.error('Something went wrong! Please try again later');
-        }
+        if (result) setIsLogin(true);
+        else toast.error("Something went wrong! Please try again later");
       }
-      // const url = isLogin ? "/api/auth/login" : "/api/auth/register";
-      // const response = await axios.post(url, {
-      //   name: formData.name,
-      //   email: formData.email,
-      //   password: formData.password
-      // });
-      // console.log('response: ', response);
-      // if(response.success){
-        
-      // }
-      // console.log("Success:", data);
-      // // Handle successful login/signup (store token, redirect, etc.)
     } catch (err) {
-      toast.error('Invalid credentials')
-      // setError(err.response?.data?.message || "An error occurred");
+      toast.error("Invalid credentials");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -71,7 +56,7 @@ const AuthPage = () => {
         <h2 className="text-2xl font-bold text-center mb-4">
           {isLogin ? "Login to Expense Tracker" : "Sign Up for Expense Tracker"}
         </h2>
-        
+
         <form onSubmit={handleSubmit} className="space-y-4">
           {!isLogin && (
             <input
@@ -102,11 +87,20 @@ const AuthPage = () => {
             className="w-full p-2 rounded bg-gray-700 border border-gray-600 text-white focus:ring focus:ring-blue-500"
             required
           />
-          
-          {error && <p className="text-red-400 text-sm">{error}</p>}
 
-          <button type="submit" className="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 rounded">
-            {isLogin ? "Login" : "Sign Up"}
+          <button
+            type="submit"
+            className="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 rounded flex items-center justify-center"
+            disabled={loading}
+          >
+            {loading ? (
+              <>
+                {/* <div>Processing </div> */}
+                <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+              </>
+            ) : (
+              isLogin ? "Login" : "Sign Up"
+            )}
           </button>
         </form>
 
