@@ -9,26 +9,30 @@ router.get('/test', async(req, res) => {
 })
 
 router.post('/add', authenticate, async (req, res) => {
-  const { amount, description, category, paymentMethod, userId } = req.body;
+  const { amount, type, description, category, paymentMethod, date, userId } = req.body;
 
   try {
     const expense = await Expense.create({
       amount,
+      type,
       description,
       category,
       paymentMethod,
+      date,
       userId,
     });
     res.status(201).json({ expense });
   } catch (err) {
+    console.log(err);
     res.status(400).json({ message: 'Failed to add expense', error: err.message });
   }
 });
 
 //lists the transactions of a particular userId
-router.get('/list/:id', async (req, res) => {
+router.get('/list', authenticate, async (req, res) => {
+  const id = req.user.id;
   try {
-    const expenses = await Expense.findAll({ where: { userId: req.params.id } }); 
+    const expenses = await Expense.findAll({ where: { userId: id } }); 
     res.json({ expenses });
   } catch (err) {
     res.status(500).json({ message: 'Failed to fetch expenses', error: err.message });
@@ -37,7 +41,7 @@ router.get('/list/:id', async (req, res) => {
 
 // Update an existing expense
 router.put('/update/:id',authenticate,  async (req, res) => {
-  const { amount, description, category, paymentMethod } = req.body;
+  const { amount, type, description, category, paymentMethod, date } = req.body;
 
   try {
     const expense = await Expense.findOne({ where: { id: req.params.id} });
@@ -48,9 +52,11 @@ router.put('/update/:id',authenticate,  async (req, res) => {
 
     
     expense.amount = amount !== undefined ? amount : expense.amount;
+    expense.type = type !== undefined ? type : expense.type;
     expense.description = description !== undefined ? description : expense.description;
     expense.category = category !== undefined ? category : expense.category;
     expense.paymentMethod = paymentMethod !== undefined ? paymentMethod : expense.paymentMethod;
+    expense.date = date !== undefined ? date : expense.date;
 
     await expense.save();
     

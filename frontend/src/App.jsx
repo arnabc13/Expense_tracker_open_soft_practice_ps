@@ -6,6 +6,7 @@ import AuthPage from "./pages/AuthPage";
 import { Toaster } from 'react-hot-toast';
 import "./App.css";
 import { AuthProvider } from "./context/AuthContext";
+import UserDashboard from "./pages/Dashboard2";
 
 function App() {
   return (
@@ -13,7 +14,8 @@ function App() {
       <Toaster />
       <Router>
         <Routes>
-          <Route path="/" element={<Dashboard />} />
+          <Route path="/" element={<UserDashboard />} />
+          {/* <Route path="/" element={<Dashboard />} /> */}
           <Route path="/auth" element={<AuthPage />} />
         </Routes>
       </Router>
