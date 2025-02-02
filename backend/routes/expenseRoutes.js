@@ -72,13 +72,13 @@ router.delete('/delete/:id', authenticate,  async (req, res) => {
     const expense = await Expense.findOne({ where: { id: req.params.id } });
 
     if (!expense) {
-      return res.status(404).json({ message: 'Expense not found' });
+      return res.status(404).json({ success: false, message: 'Expense not found' });
     }
 
     await expense.destroy();
-    res.json({ message: 'Expense deleted successfully' });
+    res.json({ success: true, message: 'Expense deleted successfully' });
   } catch (err) {
-    res.status(500).json({ message: 'Failed to delete expense', error: err.message });
+    res.status(500).json({ success: false, message: 'Failed to delete expense', error: err.message });
   }
 });
 
