@@ -1,0 +1,91 @@
+{
+  "users": [
+    {
+      "userId": 1,
+      "name": "Yuvan",
+      "expenses": [
+        {
+          "id": 1,
+          "amount": 1000,
+          "description": "Rent",
+          "category": "housing",
+          "type": "expense",
+          "paymentMethod": "online",
+          "date": "2022-01-01"
+        },
+        {
+          "id": 2,
+          "amount": 500,
+          "description": "Groceries",
+          "category": "food",
+          "type": "expense",
+          "paymentMethod": "cash",
+          "date": "2022-01-02"
+        }
+      ]
+    },
+    {
+      "userId": 6,
+      "name": "Yuuuan",
+      "expenses": [
+        {
+          "id": 1,
+          "amount": 1000,
+          "description": "Rent",
+          "category": "housing",
+          "type": "expense",
+          "paymentMethod": "online",
+          "date": "2022-01-01"
+        },
+        {
+          "id": 2,
+          "amount": 500,
+          "description": "Groceries",
+          "category": "food",
+          "type": "expense",
+          "paymentMethod": "cash",
+          "date": "2022-01-02"
+        }
+      ]
+    },
+    {
+      "userId": 2,
+      "name": "Aarav",
+      "expenses": [
+        {
+          "id": 3,
+          "amount": 2000,
+          "description": "Laptop Purchase",
+          "category": "electronics",
+          "type": "expense",
+          "paymentMethod": "online",
+          "date": "2022-01-10"
+        }
+      ]
+    },
+    {
+      "userId": 3,
+      "name": "Meera",
+      "expenses": [
+        {
+          "id": 4,
+          "amount": 300,
+          "description": "Dinner",
+          "category": "food",
+          "type": "expense",
+          "paymentMethod": "cash",
+          "date": "2022-01-04"
+        },
+        {
+          "id": 5,
+          "amount": 150,
+          "description": "Movie Ticket",
+          "category": "entertainment",
+          "type": "expense",
+          "paymentMethod": "online",
+          "date": "2022-01-06"
+        }
+      ]
+    }
+  ]
+}
