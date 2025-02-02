@@ -12,6 +12,10 @@ const Expense = sequelize.define('Expense', {
     type: DataTypes.FLOAT,
     allowNull: false,
   },
+  type: {
+    type: DataTypes.STRING,
+    allowNull: false
+  },
   description: {
     type: DataTypes.STRING,
   },
@@ -33,3 +37,28 @@ const Expense = sequelize.define('Expense', {
 Expense.belongsTo(User, { foreignKey: 'userId' });
 
 export default Expense;
+
+// dummyData = [
+//   {
+//     "userId": 1,
+//     "expenses": [
+//       {
+//         "id": 1,
+//         "amount": 1000,
+//         "description": "Rent",
+//         "category": "housing",
+//         "type": "expense", // or "income"
+//         "paymentMethod": "online", // or "cash",
+//         "date": "2022-01-01"
+//       },{
+
+//       },{
+
+//       }
+//     ]
+//   },{
+
+//   },{
+    
+//   }
+// ]
