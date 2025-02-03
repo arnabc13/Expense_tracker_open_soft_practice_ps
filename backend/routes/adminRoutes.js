@@ -1,7 +1,8 @@
 import express from 'express';
 import User from './../models/user.js';
 import Role from './../models/role.js';
-import { authenticateToken, isAdmin } from '../middlewares/authMiddleware.js';
+import Expense from '../models/expense.js';
+import { authenticate, isAdmin } from '../middlewares/authMiddleware.js';
 
 const router = express.Router();
 
@@ -22,7 +23,7 @@ const adminMiddleware = async (req, res, next) => {
   }
 };
 
-router.get('/users', authenticateToken, adminMiddleware, async (req, res) => {
+router.get('/users', authenticate, adminMiddleware, async (req, res) => {
   try {
     const users = await User.findAll({
       attributes: { exclude: ['password'] },
@@ -35,7 +36,7 @@ router.get('/users', authenticateToken, adminMiddleware, async (req, res) => {
   }
 });
 
-router.patch('/users/:userId', authenticateToken, adminMiddleware, async (req, res) => {
+router.patch('/users/:userId', authenticate, adminMiddleware, async (req, res) => {
   const { userId } = req.params;
   const { roleId } = req.body;
 
@@ -57,7 +58,7 @@ router.patch('/users/:userId', authenticateToken, adminMiddleware, async (req, r
 });
 
 
-router.delete('/users/:userId', authenticateToken, adminMiddleware, async (req, res) => {
+router.delete('/users/:userId', authenticate, adminMiddleware, async (req, res) => {
   const { userId } = req.params;
 
   try {
@@ -77,7 +78,8 @@ router.delete('/users/:userId', authenticateToken, adminMiddleware, async (req, 
   }
 });
 
-router.get('/analytics', authenticateToken, adminMiddleware, async (req, res) => {
+//gets total users and active users
+router.get('/analytics',authenticate, async (req, res) => {
   try {
     const userCount = await User.count();
     const activeUsers = await User.count({ where: { isActive: true } });
@@ -91,5 +93,61 @@ router.get('/analytics', authenticateToken, adminMiddleware, async (req, res) =>
     res.status(500).json({ message: 'Server error.' });
   }
 });
+
+// Get total number of expenses added
+router.get('/total-expenses',authenticate, async (req, res) => {
+  try {
+    const totalExpenses = await Expense.count();
+    res.json({ totalExpenses });
+  } catch (err) {
+    res.status(500).json({ message: 'Failed to fetch total expenses', error: err.message });
+  }
+});
+
+// Get net amount of transactions stored
+router.get('/net',authenticate, async (req, res) => {
+  try {
+    const netAmount = await Expense.sum('amount'); 
+    res.json({ netAmount });
+  } catch (err) {
+    res.status(500).json({ message: 'Failed to fetch net amount', error: err.message });
+  }
+});
+
+// Get expense by date
+router.get('/by-date', authenticate,  async (req, res) => {
+  console.log(req.user);
+
+  try {
+    const expenses = await Expense.findAll({
+      order: [['date', 'DESC']], // Sort by date 
+    });
+
+    // Group by date
+    const expensesByDate = {};
+    expenses.forEach(expense => {
+      const dateKey = expense.date.toISOString().split('T')[0]; // Extract YYYY-MM-DD
+      if (!expensesByDate[dateKey]) {
+        expensesByDate[dateKey] = [];
+      }
+      expensesByDate[dateKey].push({
+        id: expense.id,
+        amount: expense.amount,
+        type: expense.type,
+        description: expense.description,
+        category: expense.category,
+        paymentMethod: expense.paymentMethod,
+        date: expense.date,
+      });
+    });
+
+    res.json({ expensesByDate });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Failed to fetch expenses by date', error: error.message });
+  }
+});
+
+
 
 export default router;

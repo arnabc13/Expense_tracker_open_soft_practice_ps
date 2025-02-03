@@ -1,7 +1,4 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { useState } from "react";
-import Navbar from "./components/Navbar";
-import Dashboard from "./pages/Dashboard";
 import AuthPage from "./pages/AuthPage";
 import { Toaster } from "react-hot-toast";
 import "./App.css";
