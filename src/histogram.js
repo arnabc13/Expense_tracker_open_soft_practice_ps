@@ -40,7 +40,7 @@ export default function Histogram(){
 
     return(                            
   <BarChart width={630} height={350} data={monthlydata}>
-    <XAxis dataKey="label" />
+    <XAxis dataKey="Label" />
     <YAxis />
     <Tooltip />
     <Legend />

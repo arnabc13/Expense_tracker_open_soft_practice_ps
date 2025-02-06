@@ -19,7 +19,7 @@ function Line_Chart({month}){
 
     const monthlydata= Object.keys(data).map((day)=>({
         label: `${day}`,
-        monthlyexpense: data[day],
+        Date_wise_expense: data[day],
     }));
     
     return(
@@ -30,7 +30,7 @@ function Line_Chart({month}){
                     <Legend />
                     <Tooltip />
                     <Line
-                        dataKey="monthlyexpense"
+                        dataKey="Date_wise_expense"
                         stroke="green"
                         activeDot={{ r: 9 }}
                     />
