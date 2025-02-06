@@ -6,7 +6,7 @@ const UserAnalytics = () => {
   const [selectedUser, setSelectedUser] = useState(null);
 
   useEffect(() => {
-    fetch("./dummy_data.json")
+    fetch("http://localhost:5000/api/admin/users/all-expenses") //tried axios but was getting error
       .then((response) => response.json())
       .then((data) => {
         setUsers(data.users);
@@ -38,7 +38,7 @@ const UserAnalytics = () => {
           </thead>
           <tbody className="bg-gray-800 font-semibold">
             {users.map((user) => {
-              const lastTransaction = user.expenses.length > 0 ? user.expenses[user.expenses.length - 1] : null;
+              const lastTransaction = user.expenses.length > 0 ? user.expenses[0] : null;
               return (
                 <tr
                   key={user.userId}
@@ -52,7 +52,7 @@ const UserAnalytics = () => {
                   </td>
                   <td className="p-3 border-b border-[#2a3a4f] ">
                     <span className="bg-green-600 font-semibold rounded-full flex justify-center w-[10%]">₹{lastTransaction ? lastTransaction.amount : "N/A"}</span>
-                    
+
                   </td>
                 </tr>
               );
@@ -89,7 +89,7 @@ const UserAnalytics = () => {
                       <td className="p-2">{expense.description}</td>
                       <td className="p-2">{expense.category}</td>
                       <td className="p-2">
-                        <span className={`px-3 py-1 rounded-full text-sm ${expense.type === 'Income' ? 'bg-green-600' : 'bg-red-600'
+                        <span className={`px-3 py-1 rounded-full text-sm ${expense.type === 'income' ? 'bg-green-700' : 'bg-red-600'
                           }`}>
                           {expense.type}
                         </span>
